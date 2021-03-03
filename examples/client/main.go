@@ -16,6 +16,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -173,4 +174,56 @@ func main() {
 	for _, txn := range block.OtherTransactions {
 		log.Printf("Other Transaction: %+v\n", txn)
 	}
+
+	index := new(int64)
+	*index = 1000
+	hash := new(string)
+	*hash = "Block 1000"
+	accountBalance, rosettaErr, err := client.AccountAPI.AccountBalance(
+		ctx,
+		&types.AccountBalanceRequest{
+			NetworkIdentifier: primaryNetwork,
+			AccountIdentifier: &types.AccountIdentifier{
+				Address: "Address 1",
+				SubAccount: &types.SubAccountIdentifier{
+					Address:  "Address 2",
+					Metadata: map[string]interface{}{},
+				},
+				Metadata: map[string]interface{}{},
+			},
+			BlockIdentifier: &types.PartialBlockIdentifier{
+				Index: index,
+				Hash:  hash,
+			},
+			Currencies: []*types.Currency{
+				{
+					Symbol:   "ROS",
+					Decimals: 2,
+					Metadata: map[string]interface{}{},
+				},
+			},
+		},
+	)
+	fmt.Printf("Error: %v", err)
+	if rosettaErr != nil {
+		log.Printf("Rosetta Error: %+v\n", rosettaErr)
+	}
+	if err != nil {
+		// log.Printf(err)
+	}
+	totalBalance := accountBalance
+	fmt.Println(totalBalance)
+
+	// accountCoins, rosettaErr, err := client.AccountAPI.AccountCoins(
+	// 	ctx,
+	// 	&types.AccountCoinsRequest{},
+	// )
+	// if rosettaErr != nil {
+	// 	log.Printf("Rosetta Error: %+v\n", rosettaErr)
+	// }
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// coins := accountCoins
+	// fmt.Println(coins)
 }
