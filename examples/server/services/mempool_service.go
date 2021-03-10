@@ -28,7 +28,7 @@ type MempoolAPIService struct {
 
 // NewMempoolAPIService creates a new instance of a MempoolAPIService.
 func NewMempoolAPIService(network *types.NetworkIdentifier) server.MempoolAPIServicer {
-	return &MempoolAPIService{
+	return &MempoolAPIService {
 		network: network,
 	}
 }
@@ -36,12 +36,24 @@ func NewMempoolAPIService(network *types.NetworkIdentifier) server.MempoolAPISer
 // Mempool implements the /mempool endpoint
 func (s *MempoolAPIService) Mempool(
 	ctx context.Context,
-	request *types.MetadataRequest,
+	request *types.NetworkRequest,
 ) (*types.MempoolResponse, *types.Error) {
-	return &types.MempoolResponse{
-		NetworkIdentifiers: []*types.NetworkIdentifier{
-			s.network,
-		},
-	}, nil
+	return &types.MempoolResponse {}, nil
+	// return &types.MempoolResponse {
+	// 	NetworkIdentifiers: []*types.NetworkIdentifier{
+	// 		s.network,
+	// 	},
+	// }, nil
 }
 
+func (s *MempoolAPIService) MempoolTransaction(
+	ctx context.Context,
+	request *types.MempoolTransactionRequest,
+) (*types.MempoolTransactionResponse, *types.Error) {
+	return nil, nil
+	// return &types.MempoolResponse {
+	// 	NetworkIdentifiers: []*types.NetworkIdentifier{
+	// 		s.network,
+	// 	},
+	// }, nil
+}
