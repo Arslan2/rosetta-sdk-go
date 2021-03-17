@@ -90,6 +90,12 @@ func (s *NetworkAPIService) NetworkStatus(
 	// current block data -----------------------------------------
 	chain := resp_body["chain"].(map[string]interface{})
 	height, _ := strconv.ParseInt(fmt.Sprintf("%v", chain["height"]), 10, 64)
+	curr_block := &types.BlockIdentifier{
+		Index: height,
+		Hash:  fmt.Sprintf("%v", chain["tip"]),
+	}
+
+	// getting urrent block time
 
 	b_url := fmt.Sprintf("%s/%s/%d", url, "header", height)
 	resp, _ := http.Get(b_url)
@@ -101,10 +107,6 @@ func (s *NetworkAPIService) NetworkStatus(
 			fmt.Println("Argh! Broken")
 		}
 		defer resp.Body.Close()
-	}
-	curr_block := &types.BlockIdentifier{
-		Index: height,
-		Hash:  fmt.Sprintf("%v", chain["tip"]),
 	}
 
 	// ---------------------------------------------------------------

@@ -49,7 +49,13 @@ func NewBlockchainRouter(
 		asserter,
 	)
 
-	return server.NewRouter(networkAPIController, blockAPIController)
+	accountAPIService := services.NewAccountAPIService(network)
+	accountAPIController := server.NewAccountAPIController(
+		accountAPIService,
+		asserter,
+	)
+
+	return server.NewRouter(networkAPIController, blockAPIController, accountAPIController)
 }
 
 var myClient = &http.Client{Timeout: 10 * time.Second}
